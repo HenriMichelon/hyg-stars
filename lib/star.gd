@@ -2,6 +2,7 @@ class_name Star extends Object
 
 var id:int
 var hip:int
+var bf:String
 var proper:String
 var absmag:float
 var ci:float
@@ -11,9 +12,9 @@ var lum:float
 func _init(entry:Dictionary):
 	id = entry["id"]
 	hip = entry["hip"]
+	bf = entry["bf"]
 	proper = entry["proper"]
 	absmag = entry["absmag"]
 	ci = entry["ci"]
 	position = Vector3(entry["x"], entry["y"], entry["z"])
 	lum = entry["lum"]
-	

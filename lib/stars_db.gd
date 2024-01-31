@@ -4,6 +4,7 @@ class_name StarsDB extends Object
 const columns:Array[String] = [
 	"id",		# The database primary key.
 	"hip",		# The star's ID in the Hipparcos catalog, if known.
+	"bf",		# The Bayer / Flamsteed designation, primarily from the Fifth Edition of the Yale Bright Star Catalo
 	"proper",	# A common name for the star, such as "Barnard's Star" or "Sirius"
 	"absmag",	# The star's absolute visual magnitude (its apparent magnitude from a distance of 10 parsecs).
 	"ci",		#  The star's color index (blue magnitude - visual magnitude), where known.
@@ -20,6 +21,7 @@ enum ColumnsType {
 const columns_types:Array[ColumnsType] = [
 	ColumnsType.TYPE_INT,
 	ColumnsType.TYPE_INT,
+	ColumnsType.TYPE_STRING,
 	ColumnsType.TYPE_STRING,
 	ColumnsType.TYPE_FLOAT,
 	ColumnsType.TYPE_FLOAT,
@@ -94,7 +96,7 @@ func hyg_load(file_path_in: String):
 func hyg_convert(file_path_in: String, file_path_out: String, delimiter: String = ","):
 	var file_in = FileAccess.open(file_path_in, FileAccess.READ)
 	var file_out = FileAccess.open(file_path_out, FileAccess.WRITE)
-	var columns_index:Array[int] = [ -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
+	var columns_index:Array[int] = [ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 ]
 	assert(columns_index.size() == columns.size())
 	var file_column_index = 0
 	for column_name in file_in.get_csv_line(delimiter):
@@ -117,7 +119,6 @@ func hyg_convert(file_path_in: String, file_path_out: String, delimiter: String 
 				ColumnsType.TYPE_STRING:
 					file_out.store_pascal_string(value)
 		i += 1
-		print(i)
 	file_in.close()
 	file_out.close()
 

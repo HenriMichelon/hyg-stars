@@ -9,5 +9,6 @@ script = ExtResource("1_sq03l")
 
 [node name="Player" parent="." instance=ExtResource("1_mcfhp")]
 
-[node name="Universe" parent="." instance=ExtResource("2_ip3j3")]
+[node name="Universe" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_ip3j3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.517697, 0.885642, 4.80956)
+player = NodePath("../Player")

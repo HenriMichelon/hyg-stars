@@ -1,16 +1,16 @@
 shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_disabled,unshaded,shadows_disabled;
 
-uniform vec4 albedo : source_color;
 uniform float point_size : hint_range(0,128);
 uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
 
 varying float apparent_magnitude;
 varying float intensity;
+varying float mag_limit;
 
 uniform float mag_ref = 4.0; // Reference magnitude of intensity of 1: 1 = brightness before expanding the point size
-uniform float mag_limit = 8.0; // When we can't see stars anymore
+//uniform float mag_limit = 8.0; // When we can't see stars anymore
 const float e = 2.7182818284590452353602;
 
 
@@ -25,6 +25,8 @@ float circle(vec2 position, float radius, float feather)
 
 
 void vertex() {
+	mag_limit = INSTANCE_CUSTOM.z;
+
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
     
     // Calculate distance to camera, in parsecs
@@ -62,7 +64,7 @@ void fragment() {
     }
 	ALBEDO = COLOR.rgb;
 	
-    float dist = length(POINT_COORD - vec2(0.5, 0.5)); 
+   float dist = length(POINT_COORD - vec2(0.5, 0.5)); 
     if (dist > 0.5f){
 		discard;
 	} else if (dist > 0.3f){

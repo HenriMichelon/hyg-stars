@@ -6,11 +6,17 @@ const pitch_speed:float = 1.5
 const roll_speed:float = 1.9
 const yaw_speed:float = 1.25
 const input_response:float = 8.0
+const mouse_sensitivity:float = 0.005
 
 var pitch_input:float = 0.0
 var roll_input:float = 0.0
 var yaw_input:float = 0.0
 var forward_speed:float = 0.0
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		transform.basis = transform.basis.rotated(transform.basis.y, -event.relative.x * mouse_sensitivity)
+		transform.basis = transform.basis.rotated(transform.basis.x, -event.relative.y * mouse_sensitivity)
 
 func get_input(delta):
 	if Input.is_action_pressed("throttle_up"):
