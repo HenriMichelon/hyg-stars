@@ -34,7 +34,7 @@ var id_index : Dictionary = {}
 var hip_index : Dictionary = {}
 var proper_index : Dictionary = {}
 
-func _ready():
+func _init():
 	_load()
 
 func _convert():
@@ -85,6 +85,8 @@ func hyg_load(file_path_in: String):
 				"proper":
 					if (not value.is_empty()):
 						proper_index[value] = i
+		if (entry.is_empty()):
+			break
 		stars.append(entry)
 		i += 1
 	file.close()
