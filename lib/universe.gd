@@ -20,12 +20,14 @@ func _ready():
 	generate_stars()
 	var data = stars_db.stars
 	for i in multimesh.instance_count:
-		if data[i].proper:
-			var label = Label3D.new()
-			label.text = data[i].proper
-			label.billboard = 1
-			label.transform = Transform3D(Basis(), Vector3(data[i].position.x, data[i].position.y + 0.11, data[i].position.z))
-			$StarsLabels.add_child(label)
+		var star_name = data[i].proper
+		if not data[i].proper:
+			star_name = str(data[i].hip)
+		var label = Label3D.new()
+		label.text = star_name
+		label.billboard = 1
+		label.transform = Transform3D(Basis(), Vector3(data[i].position.x, data[i].position.y + 0.11, data[i].position.z))
+		$StarsLabels.add_child(label)
 	star_labels_visible = $StarsLabels.visible
 
 func generate_stars():
