@@ -1,9 +1,12 @@
 extends Node3D
 
 @onready var universe:Universe = $Universe
+@onready var player:Player = $Player
 
-
+var stars_db:StarsDB
 
 func _ready():
-	print(StarsDB.get_star_proper("Sirius"))
+	stars_db = $Universe.stars_db
+	var sirius:Star = stars_db.get_star_proper("Sirius")
+	player.position = sirius.position
 

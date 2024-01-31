@@ -1,5 +1,4 @@
-extends CharacterBody3D
-
+class_name Player extends CharacterBody3D
 
 const max_speed:float = 10.0
 const acceleration:float = 0.6

@@ -1,25 +1,10 @@
 class_name Universe extends MultiMeshInstance3D
 
+var stars_db:StarsDB
+
 @export var celestial_coords: Vector3
 
-@export var mag_ref: float:
-	get:
-		return mag_ref
-	set(mag):
-		mag_ref = mag
-		if is_inside_tree():
-			generate_stars()
-
-@export var mag_limit: float:
-	get:
-		return mag_limit
-	set(new_limit):
-		mag_limit = new_limit
-		if is_inside_tree():
-			generate_stars()
-
 @export var star_labels_visible: bool:
-	# Errors are thrown if we try and get @star_labels directly
 	get:
 		return star_labels_visible
 	set(visible):
@@ -28,34 +13,31 @@ class_name Universe extends MultiMeshInstance3D
 		star_labels_visible = visible
 		$StarsLabels.visible = visible
 
-
-func _process(_delta):
-	var active_camera = get_viewport().get_camera_3d()
-	if active_camera:
-		position = active_camera.position - celestial_coords
+func _init():
+	stars_db = StarsDB.new()
 
 func _ready():
 	generate_stars()
-	var data = StarsDB.stars
+	var data = stars_db.stars
 	for i in multimesh.instance_count:
-		if data[i]["proper"]:
+		if data[i].proper:
 			var label = Label3D.new()
-			label.text = data[i]["proper"]
+			label.text = data[i].proper
 			label.billboard = 1
-			label.transform = Transform3D(Basis(), Vector3(float(data[i]["x"]), float(data[i]["y"]) + 0.11, float(data[i]["z"])))
+			label.transform = Transform3D(Basis(), Vector3(data[i].position.x, data[i].position.y + 0.11, data[i].position.z))
 			$StarsLabels.add_child(label)
 	star_labels_visible = $StarsLabels.visible
 
 func generate_stars():
-	var data = StarsDB.stars
+	var data = stars_db.stars
 	multimesh.instance_count = data.size()
 	print("Generating stars...")
 	for i in multimesh.instance_count:
 		var entry = data[i]
-		multimesh.set_instance_transform(i, Transform3D(Basis(), Vector3(float(data[i]["x"]), float(data[i]["y"]), float(data[i]["z"]))))
+		multimesh.set_instance_transform(i, Transform3D(Basis(), data[i].position))
 		# Convert color index to temperature
 		# https://en.wikipedia.org/wiki/Color_index#cite_note-PyAstronomy-6
-		var color_index = float(data[i]["ci"])
+		var color_index = data[i].ci
 		var temperature = 4600 * ((1 / (0.92 * color_index + 1.7)) + (1 / (0.92 * color_index + 0.62)))
 		
 		# Temperature to RGB
@@ -122,5 +104,5 @@ func generate_stars():
 				blue = tmp_blue
 		multimesh.set_instance_color(i, Color(red/255.0 , green/255.0, blue/255.0))
 		# X is abs magnitude, y relative
-		multimesh.set_instance_custom_data(i, Color(data[i]["absmag"], float(data[i]["lum"]), mag_ref, mag_limit))
+		multimesh.set_instance_custom_data(i, Color(data[i].absmag, data[i].lum, 0.0, 0.0))
 	print("Finihed generating stars...")

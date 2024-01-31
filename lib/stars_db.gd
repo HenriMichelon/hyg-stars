@@ -1,4 +1,4 @@
-extends Node
+class_name StarsDB extends Object
 
 # http://www.astronexus.com/hyg
 const columns:Array[String] = [
@@ -29,7 +29,7 @@ const columns_types:Array[ColumnsType] = [
 	ColumnsType.TYPE_FLOAT
 ]
 
-var stars : Array[Dictionary] = []
+var stars : Array[Star] = []
 var id_index : Dictionary = {}
 var hip_index : Dictionary = {}
 var proper_index : Dictionary = {}
@@ -87,7 +87,7 @@ func hyg_load(file_path_in: String):
 						proper_index[value] = i
 		if (entry.is_empty()):
 			break
-		stars.append(entry)
+		stars.append(Star.new(entry))
 		i += 1
 	file.close()
 	
