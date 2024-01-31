@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://0jf0wbansc2g"]
+
+[ext_resource type="PackedScene" uid="uid://bldy3hibj523j" path="res://scenes/player.tscn" id="1_mcfhp"]
+[ext_resource type="Script" path="res://lib/main.gd" id="1_sq03l"]
+[ext_resource type="PackedScene" uid="uid://cqiihxipk71cs" path="res://scenes/universe.tscn" id="2_ip3j3"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_sq03l")
+
+[node name="Player" parent="." instance=ExtResource("1_mcfhp")]
+
+[node name="Universe" parent="." instance=ExtResource("2_ip3j3")]
